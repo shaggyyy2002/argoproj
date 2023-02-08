@@ -12,24 +12,24 @@ pipeline{
 
     stages{
         stage('Clean Workspace..'){
-            script{
+            steps{
                 cleanWs()
             }
         }
         stage('Checkout Github..'){
-            script{
+            steps{
                 credentialsId = 'github'
                 url = 'https://github.com/shaggyyy2002/argoproj.git'
                 branch = 'main'
             }
         }
         stage('Build Image..'){
-            script{
+            steps{
                 docker_image = docker.build "${IMAGE_NAME}"
             }
         }
         stage('Push Image to DockerHub..'){
-            script{
+            steps{
                 docker.withRegistry('',REGISTRY_CREDS){
                     docker_image.push('$BUILD_NUMBER')
                     docker_image.push('latest')
